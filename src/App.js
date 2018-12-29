@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import deepOrange from '@material-ui/core/colors/deepOrange';
 import grey from '@material-ui/core/colors/grey';
 import GridStreams from './Components/GridStreams';
 import TopAppBar from './Components/TopAppBar';
 import TwitchAPI from './API/TwitchAPI';
 import { deepPurple } from '@material-ui/core/colors';
+import VideoPlayer from './Components/VideoPlayer/VideoPlayer';
 
 const deepPurplePalette = createMuiTheme({
   palette: {
@@ -26,28 +24,26 @@ const deepPurplePalette = createMuiTheme({
 class App extends Component {
   constructor(props) {
     super(props);
+    this.handleStreamClick = this.handleStreamClick.bind(this);
     this.state = {
+      selectedStream: null,
       loading: false,
       tileData: []
     };
   }
-
+  handleStreamClick = (oStream) => {
+    this.setState({ selectedStream: oStream });
+    console.log("here I should change the state to show the VideoPlayer component", oStream)
+  }
   componentDidMount = () => {
     const twAPI = new TwitchAPI();
     twAPI.getTwitchStreams().then((response) => {
       this.setState({ tileData: response.data.data });
-      console.log(response);
 
     }).catch((error) => {
       console.log(error);
 
     });
-    console.log("Montou o App.js")
-
-  }
-  componentDidUpdate = () => {
-    console.log("Atualizou o App.js")
-
   }
 
   render() {
@@ -56,16 +52,17 @@ class App extends Component {
         <div className="App">
           <TopAppBar></TopAppBar>
           {
+            
+            (this.state.tileData.length > 0 && !this.state.selectedStream) ?
 
-            (this.state.tileData.length > 0) ?
-
-              <GridStreams tileData={this.state.tileData}>
+              <GridStreams tileData={this.state.tileData} handleStreamClick={this.handleStreamClick}>
 
               </GridStreams>
 
               :
 
-              "Não há videos disponíveis, faça uma busca ou carregue 5" // colocar um paper pra ficar mais bonito
+              <VideoPlayer selectedStream={this.state.selectedStream}></VideoPlayer>
+
           }
 
         </div>

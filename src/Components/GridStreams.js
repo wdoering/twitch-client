@@ -54,29 +54,34 @@ function TitlebarGridList(props) {
         ]
     },
    */
-  console.log(props);
-  console.log((props.tileData[0]) ? props.tileData[0].thumbnail_url : "null");
 
+  // console.log(props, props.handleStreamClick);
+  // console.log((props.tileData[0]) ? props.tileData[0].thumbnail_url : "null");
+  console.log(classes);
   return (
     <div className={classes.root}>
       <GridList cellHeight={180} className={classes.gridList}>
+
         <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-          <ListSubheader component="div">This subheader will probably not be used</ListSubheader>
+          <ListSubheader component="div">{props.handleStreamClick}</ListSubheader>
         </GridListTile>
-        {props.tileData.map(tile => (
-          <GridListTile key={tile.id}>
-            <img src={tile.thumbnail_url.replace("{width}","290").replace("{height}","180")} alt={tile.title} />
-            <GridListTileBar
-              title={tile.title}
-              subtitle={<span>by: {tile.user_name}  ||  watchers: {tile.viewer_count}</span>}
-              actionIcon={
-                <IconButton className={classes.icon}>
-                  <InfoIcon />
-                </IconButton>
-              }
-            />
-          </GridListTile>
-        ))}
+
+        {
+          props.tileData.map(tile => (
+            <GridListTile key={tile.id} onClick={() => props.handleStreamClick(tile)}>
+              <img src={tile.thumbnail_url.replace("{width}", "290").replace("{height}", "180")} alt={tile.title} />
+              <GridListTileBar
+                title={tile.title}
+                subtitle={<span>by: {tile.user_name}  ||  watchers: {tile.viewer_count}</span>}
+                actionIcon={
+                  <IconButton className={classes.icon}>
+                    <InfoIcon />
+                  </IconButton>
+                }
+              />
+            </GridListTile>
+          ))
+        }
       </GridList>
     </div>
   );
@@ -84,7 +89,8 @@ function TitlebarGridList(props) {
 
 TitlebarGridList.propTypes = {
   classes: PropTypes.object.isRequired,
-  tileData: PropTypes.object.isRequired,
+  tileData: PropTypes.array.isRequired,
+  handleStreamClick: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(TitlebarGridList);
