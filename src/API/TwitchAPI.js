@@ -4,13 +4,23 @@ import { TWITCH_API_BASE_URL, TWITCH_APP_KEY } from '../Utils/Constants';
 axios.defaults.headers.common['Client-ID'] = TWITCH_APP_KEY;
 
 export class TwitchAPI {
-    
-    getTwitchStreams(searchTwitchBy = "") {
+    /**
+     * 
+     * @param {string} searchTwitchBy this is how the user searches content by
+     * @param {number} nMaxListSize max number of channels desired
+     */
+    getTwitchStreams(searchTwitchBy = "", nMaxListSize) {
         let params = {
-          
+
         };
-        if (searchTwitchBy)
-            params.searchTwitchBy = searchTwitchBy;
+
+        if (nMaxListSize)
+            params.first = nMaxListSize;
+
+
+        // if (searchTwitchBy)
+        //     params.searchTwitchBy = searchTwitchBy;
+
         return axios.get(TWITCH_API_BASE_URL, { params });
     }
 }

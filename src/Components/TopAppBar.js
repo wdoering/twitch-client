@@ -4,7 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-// import InputBase from '@material-ui/core/InputBase';
+import TextField from "@material-ui/core/TextField";
 import Input from '@material-ui/core/Input';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
@@ -71,35 +71,82 @@ const styles = theme => ({
   },
 });
 
-function SearchAppBar(props) {
-  const { classes } = props;
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
-            <MenuIcon />
-          </IconButton>
-          <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-            Wagner´s Twitch Client
-          </Typography>
-          <div className={classes.grow} />
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+class SearchAppBar extends React.Component {
+  constructor(props) {
+    super(props);
+    let nInitialCountValue = 2;
+
+    this.handleChange = this.handleChange.bind(this);
+
+    const nMaxVideosCount = localStorage.getItem("maxVideosCount");
+    if (nMaxVideosCount)
+      nInitialCountValue = nMaxVideosCount;
+
+    this.state = {
+      maxVideosCount: nInitialCountValue
+
+    };
+  }
+
+  handleChange = prop => event => {
+
+    if (prop === "maxVideosCount")
+      localStorage.setItem("maxVideosCount", event.target.value);
+    this.setState({ [prop]: event.target.value });
+
+  };
+
+
+  render() {
+
+    const { classes } = this.props;
+    return (
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
+              <MenuIcon />
+            </IconButton>
+            <Typography className={classes.title} variant="h6" color="inherit" noWrap>
+              Wagner´s Twitch Client
+            </Typography>
+
+            <div>
+
+              <TextField
+                id="standard-number"
+                label="Number"
+                value={this.state.maxVideosCount}
+                onChange={this.handleChange('maxVideosCount')}
+                type="number"
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                margin="normal"
+              />
+
             </div>
-            <Input
-              placeholder="Buscar…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-            > </Input>
-          </div>
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
+
+            <div className={classes.grow} />
+
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <Input
+                placeholder="Buscar…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+              > </Input>
+            </div>
+          </Toolbar>
+        </AppBar>
+      </div>
+    );
+  }
 }
 
 SearchAppBar.propTypes = {
