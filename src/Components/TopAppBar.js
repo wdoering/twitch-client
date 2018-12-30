@@ -97,7 +97,7 @@ class SearchAppBar extends React.Component {
 
               <TextField
                 id="standard-number"
-                label="Number"
+                label="Contagem de Streams"
                 value={this.props.maxVideosCount}
                 onChange={this.props.handleMaxVideosCount}
                 type="number"
@@ -105,7 +105,7 @@ class SearchAppBar extends React.Component {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                margin="normal"
+                margin="auto"
               />
 
             </div>

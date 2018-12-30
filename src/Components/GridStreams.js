@@ -4,8 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
-import ListSubheader from '@material-ui/core/ListSubheader';
-
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -58,24 +56,21 @@ function TitlebarGridList(props) {
 
   return (
     <div className={classes.root}>
-      <GridList cellHeight={180} className={classes.gridList}>
 
-        <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-          <ListSubheader component="div">{props.handleStreamClick}</ListSubheader>
-        </GridListTile>
+        <GridList cellHeight={180} cellWidth={290} className={classes.gridList}>
 
-        {
-          props.tileData.map(tile => (
-            <GridListTile key={tile.id} onClick={() => props.handleStreamClick(tile)}>
-              <img src={tile.thumbnail_url.replace("{width}", "290").replace("{height}", "180")} alt={tile.title} />
-              <GridListTileBar
-                title={tile.title}
-                subtitle={<span>by: {tile.user_name}  ||  watchers: {tile.viewer_count}</span>}
-              />
-            </GridListTile>
-          ))
-        }
-      </GridList>
+          {
+            props.tileData.map(tile => (
+              <GridListTile item xs={3} key={tile.id} onClick={() => props.handleStreamClick(tile)}>
+                <img src={tile.thumbnail_url.replace("{width}", "290").replace("{height}", "180")} alt={tile.title} />
+                <GridListTileBar
+                  title={tile.title}
+                  subtitle={<span>by: {tile.user_name}  ||  watchers: {tile.viewer_count}</span>}
+                />
+              </GridListTile>
+            ))
+          }
+        </GridList>
     </div>
   );
 }

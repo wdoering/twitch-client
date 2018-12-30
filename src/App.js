@@ -52,18 +52,26 @@ class App extends Component {
   handleMaxVideosCount(event) {
 
     localStorage.setItem("maxVideosCount", event.target.value);
-
     this.setState({
       maxVideosCount: event.target.value
     });
+    const twAPI = new TwitchAPI();
 
+    twAPI.getTwitchStreams(event.target.value).then((response) => {
+      this.setState({ loading: false, tileData: response.data.data });
+    }).catch((error) => {
+
+      this.setState({ loading: false });
+      console.log(error);
+
+    });
   }
 
   handleStreamSearch = (event) => {
-    
+
     clearTimeout(this.delayTimer);
     this.setState({ loading: true });
-    var twAPI = new TwitchAPI();
+    const twAPI = new TwitchAPI();
 
     let sSearchValue = event.target.value;
 
@@ -77,7 +85,7 @@ class App extends Component {
         this.setState({ loading: false });
         console.log(error);
 
-      })
+      });
 
     }, this.nMaxTimeout);
 
