@@ -38,7 +38,7 @@ class App extends Component {
   }
   componentDidMount = () => {
     const twAPI = new TwitchAPI();
-    twAPI.getTwitchStreams(undefined, localStorage.getItem(MAX_VIDEOS_COUNT_KEY)).then((response) => {
+    twAPI.getTwitchStreams(localStorage.getItem(MAX_VIDEOS_COUNT_KEY)).then((response) => {
       this.setState({ tileData: response.data.data });
 
     }).catch((error) => {
