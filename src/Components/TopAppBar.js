@@ -90,7 +90,6 @@ class SearchAppBar extends React.Component {
 
     this.state = {
       maxVideosCount: nInitialCountValue
-
     };
   }
 
@@ -101,7 +100,6 @@ class SearchAppBar extends React.Component {
     this.setState({ [prop]: event.target.value });
 
   };
-
 
   render() {
 
@@ -142,6 +140,7 @@ class SearchAppBar extends React.Component {
               </div>
               <Input
                 placeholder="Buscar…"
+                onChange={this.props.handleStreamSearch}
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,

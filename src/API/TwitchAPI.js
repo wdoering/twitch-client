@@ -31,10 +31,10 @@ export class TwitchAPI {
 
     /**
      * 
-     * @param {string} searchTwitchBy this is how the user searches content by
+     * @param {string} searchUserLogin search works by passing the exact login name of the streamer
      * @param {number} nMaxListSize max number of channels desired
      */
-    getTwitchStreams(nMaxListSize, searchUserName = "") {
+    getTwitchStreams(nMaxListSize, searchUserLogin = "") {
         let params = {
 
         };
@@ -42,8 +42,8 @@ export class TwitchAPI {
         if (nMaxListSize)
             params.first = nMaxListSize;
 
-        if (searchUserName)
-            params.user_name = searchUserName;
+        if (searchUserLogin)
+            params.user_login = searchUserLogin;
 
         return axios.get(TWITCH_API_BASE_URL + STREAMS_ENDPOINT, { params });
     }

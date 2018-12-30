@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
 import GridStreams from './Components/GridStreams';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import TopAppBar from './Components/TopAppBar';
 import TwitchAPI from './API/TwitchAPI';
 import { deepPurple } from '@material-ui/core/colors';
@@ -26,35 +27,57 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.handleStreamClick = this.handleStreamClick.bind(this);
+    this.handleStreamSearch = this.handleStreamSearch.bind(this);
 
     this.state = {
       selectedStream: null,
       loading: false,
-      tileData: []
+      tileData: [],
+      searchValue: ""
     };
   }
   handleStreamClick = (oStream) => {
-    console.log("oStream", oStream, this.state.selectedStream)
     this.setState({ selectedStream: oStream });
   }
-  componentDidMount = () => {
-    const twAPI = new TwitchAPI();
-    twAPI.getTwitchStreams(localStorage.getItem(MAX_VIDEOS_COUNT_KEY)).then((response) => {
-      this.setState({ tileData: response.data.data });
+  
+  handleStreamSearch = (event) => {
+    this.setState({ loading: true });
+    var twAPI = new TwitchAPI();
+    twAPI.getTwitchStreams(10, event.target.value).then((response) => {
+
+      this.setState({ loading: false, tileData: response.data.data });
 
     }).catch((error) => {
+
+      this.setState({ loading: false });
+
+      console.log(error);
+
+    });
+  }
+
+  componentDidMount = () => {
+    this.setState({ loading: true });
+    const twAPI = new TwitchAPI();
+    twAPI.getTwitchStreams(localStorage.getItem(MAX_VIDEOS_COUNT_KEY)).then((response) => {
+      this.setState({loading: false, tileData: response.data.data });
+
+    }).catch((error) => {
+      this.setState({ loading: false });
       console.log(error);
 
     });
   }
 
   render() {
-    console.log("render do app.js", this.state.tileData.length, !this.state.selectedStream)
     return (
       <MuiThemeProvider theme={deepPurplePalette}>
         <div className="App">
-          <TopAppBar></TopAppBar>
+          <TopAppBar handleStreamSearch={this.handleStreamSearch}></TopAppBar>
+          {(this.state.loading) ? <LinearProgress /> : null}
+
           {
+
             (this.state.tileData.length > 0 && !this.state.selectedStream) ?
               <GridStreams tileData={this.state.tileData} handleStreamClick={this.handleStreamClick}></GridStreams>
               : (!!this.state.selectedStream) ? <VideoPlayer selectedStream={this.state.selectedStream}></VideoPlayer> : "Nenhum conteúdo disponível :("
