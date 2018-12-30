@@ -60,13 +60,13 @@ class App extends Component {
   }
 
   handleStreamSearch = (event) => {
-
+    
+    clearTimeout(this.delayTimer);
     this.setState({ loading: true });
     var twAPI = new TwitchAPI();
 
     let sSearchValue = event.target.value;
 
-    clearTimeout(this.delayTimer);
 
     this.delayTimer = setTimeout(() => {
 
