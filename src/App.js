@@ -34,6 +34,7 @@ class App extends Component {
     };
   }
   handleStreamClick = (oStream) => {
+    console.log("oStream", oStream, this.state.selectedStream)
     this.setState({ selectedStream: oStream });
   }
   componentDidMount = () => {
@@ -48,6 +49,7 @@ class App extends Component {
   }
 
   render() {
+    console.log("render do app.js", this.state.tileData.length, !this.state.selectedStream)
     return (
       <MuiThemeProvider theme={deepPurplePalette}>
         <div className="App">
@@ -55,8 +57,8 @@ class App extends Component {
           {
             (this.state.tileData.length > 0 && !this.state.selectedStream) ?
               <GridStreams tileData={this.state.tileData} handleStreamClick={this.handleStreamClick}></GridStreams>
-              :
-              <VideoPlayer selectedStream={this.state.selectedStream}></VideoPlayer>
+              : (!!this.state.selectedStream) ? <VideoPlayer selectedStream={this.state.selectedStream}></VideoPlayer> : "tetas grandes"
+
           }
         </div>
       </MuiThemeProvider>

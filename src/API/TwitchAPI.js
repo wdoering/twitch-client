@@ -16,14 +16,13 @@ export class TwitchAPI {
 
         return axios.get(TWITCH_API_BASE_URL + GAMES_ENDPOINT, { params });
     }
-/**
- * 
- * @param {number} nId Get Current Stream Information
- */
+    /**
+     * 
+     * @param {number} nId Get Current Stream Information
+     */
     getStreamInfoById(nId) {
-        
         let params = {
-            id: nId
+            user_id: nId
         };
 
         return axios.get(TWITCH_API_BASE_URL + STREAMS_ENDPOINT, { params });

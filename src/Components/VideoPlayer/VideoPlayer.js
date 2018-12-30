@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import InfoIcon from '@material-ui/icons/Info';
 import Visibility from '@material-ui/icons/Visibility';
-import PersonPin from '@material-ui/icons/PersonPin';
-
+import TwitchAPI from '../../API/TwitchAPI';
+import PropTypes from 'prop-types';
 
 
 const styles = theme => ({
@@ -20,15 +18,16 @@ const styles = theme => ({
         color: theme.palette.text.secondary,
     },
     icon: {
-        color: 'red',
-        // color: 'rgba(255, 255, 255, 0.54)',
+        color: 'red'
     },
 });
 class VideoPlayer extends Component {
-    static propTypes = {
-        prop: PropTypes
+    constructor(props) {
+        super(props);
+        this.state = {
+            viewersCount: this.props.selectedStream.viewer_count
+        }
     }
-
 
     /**
      * 
@@ -49,10 +48,30 @@ class VideoPlayer extends Component {
         ]
     },
     */
+
+    updateViewersCount() {
+        const REFRESH_INTERVAL_SECONDS = 5000;
+        if (this.props.selectedStream) {
+
+            setInterval(() => {
+                let twAPI = new TwitchAPI();
+
+                twAPI.getStreamInfoById(this.props.selectedStream.user_id).then((response) => {
+                    if (response.data.data[0]) // this is because twitch API always returns arrays, even if you pass the userID
+                        this.setState({ viewersCount: response.data.data[0].viewer_count });
+                });
+
+            }, REFRESH_INTERVAL_SECONDS);
+        }
+    }
+
+    componentDidMount() {
+        this.updateViewersCount();
+    }
+
     render() {
         const { classes } = this.props;
         const { selectedStream } = this.props;
-
         let player;
         if (selectedStream) {
             const uri = 'http://player.twitch.tv/?channel=' + selectedStream.user_name;
@@ -64,7 +83,7 @@ class VideoPlayer extends Component {
                         <iframe
                             title={selectedStream.user_name}
                             src={uri}
-                            height='500px' // height='100%' makes it very small
+                            height='600px' // height='100%' makes it very small
                             width='100%'
                             allowFullScreen='true'
                             frameBorder='0'
@@ -78,7 +97,7 @@ class VideoPlayer extends Component {
                                     <Typography>{selectedStream.title}</Typography>
                                     <br></br>
                                     <Visibility className={classes.icon} />
-                                    <Typography>{selectedStream.viewer_count}</Typography>
+                                    <Typography>{this.state.viewersCount}</Typography>
 
                                 </Paper>
                             </Grid>
@@ -98,4 +117,9 @@ class VideoPlayer extends Component {
         )
     }
 }
+
+VideoPlayer.propTypes = {
+    selectedStream: PropTypes.object.isRequired
+};
+
 export default withStyles(styles)(VideoPlayer);
