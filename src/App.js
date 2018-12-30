@@ -29,6 +29,8 @@ class App extends Component {
     this.handleStreamClick = this.handleStreamClick.bind(this);
     this.handleStreamSearch = this.handleStreamSearch.bind(this);
     this.handleMaxVideosCount = this.handleMaxVideosCount.bind(this);
+    this.delayTimer = null;
+    this.nMaxTimeout = 400;
     let nInitialCountValue = 2;
     const nMaxVideosCount = localStorage.getItem("maxVideosCount");
     if (nMaxVideosCount)
@@ -58,19 +60,27 @@ class App extends Component {
   }
 
   handleStreamSearch = (event) => {
+
     this.setState({ loading: true });
     var twAPI = new TwitchAPI();
-    twAPI.getTwitchStreams(this.state.maxVideosCount, event.target.value).then((response) => {
 
-      this.setState({ loading: false, tileData: response.data.data });
+    let sSearchValue = event.target.value;
 
-    }).catch((error) => {
+    clearTimeout(this.delayTimer);
 
-      this.setState({ loading: false });
+    this.delayTimer = setTimeout(() => {
 
-      console.log(error);
+      twAPI.getTwitchStreams(this.state.maxVideosCount, sSearchValue).then((response) => {
+        this.setState({ loading: false, tileData: response.data.data });
+      }).catch((error) => {
 
-    });
+        this.setState({ loading: false });
+        console.log(error);
+
+      })
+
+    }, this.nMaxTimeout);
+
   }
 
   componentDidMount = () => {
