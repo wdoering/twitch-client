@@ -28,22 +28,39 @@ class App extends Component {
     super(props);
     this.handleStreamClick = this.handleStreamClick.bind(this);
     this.handleStreamSearch = this.handleStreamSearch.bind(this);
+    this.handleMaxVideosCount = this.handleMaxVideosCount.bind(this);
+    let nInitialCountValue = 2;
+    const nMaxVideosCount = localStorage.getItem("maxVideosCount");
+    if (nMaxVideosCount)
+      nInitialCountValue = nMaxVideosCount;
 
     this.state = {
       selectedStream: null,
       loading: false,
       tileData: [],
-      searchValue: ""
+      searchValue: "",
+      maxVideosCount: nInitialCountValue
     };
   }
+
   handleStreamClick = (oStream) => {
     this.setState({ selectedStream: oStream });
+  }
+
+  handleMaxVideosCount(event) {
+
+    localStorage.setItem("maxVideosCount", event.target.value);
+
+    this.setState({
+      maxVideosCount: event.target.value
+    });
+
   }
 
   handleStreamSearch = (event) => {
     this.setState({ loading: true });
     var twAPI = new TwitchAPI();
-    twAPI.getTwitchStreams(10, event.target.value).then((response) => {
+    twAPI.getTwitchStreams(this.state.maxVideosCount, event.target.value).then((response) => {
 
       this.setState({ loading: false, tileData: response.data.data });
 
@@ -73,7 +90,7 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={deepPurplePalette}>
         <div className="App">
-          <TopAppBar handleStreamSearch={this.handleStreamSearch}></TopAppBar>
+          <TopAppBar handleStreamSearch={this.handleStreamSearch} handleMaxVideosCount={this.handleMaxVideosCount} maxVideosCount={this.state.maxVideosCount}></TopAppBar>
           {(this.state.loading) ? <LinearProgress /> : null}
 
           {

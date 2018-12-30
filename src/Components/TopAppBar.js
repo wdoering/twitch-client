@@ -78,29 +78,7 @@ const styles = theme => ({
 });
 
 class SearchAppBar extends React.Component {
-  constructor(props) {
-    super(props);
-    let nInitialCountValue = 2;
-
-    this.handleChange = this.handleChange.bind(this);
-
-    const nMaxVideosCount = localStorage.getItem("maxVideosCount");
-    if (nMaxVideosCount)
-      nInitialCountValue = nMaxVideosCount;
-
-    this.state = {
-      maxVideosCount: nInitialCountValue
-    };
-  }
-
-  handleChange = prop => event => {
-
-    if (prop === "maxVideosCount")
-      localStorage.setItem("maxVideosCount", event.target.value);
-    this.setState({ [prop]: event.target.value });
-
-  };
-
+  
   render() {
 
     const { classes } = this.props;
@@ -120,8 +98,8 @@ class SearchAppBar extends React.Component {
               <TextField
                 id="standard-number"
                 label="Number"
-                value={this.state.maxVideosCount}
-                onChange={this.handleChange('maxVideosCount')}
+                value={this.props.maxVideosCount}
+                onChange={this.props.handleMaxVideosCount}
                 type="number"
                 className={classes.textField}
                 InputLabelProps={{
