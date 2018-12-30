@@ -39,7 +39,7 @@ class App extends Component {
   handleStreamClick = (oStream) => {
     this.setState({ selectedStream: oStream });
   }
-  
+
   handleStreamSearch = (event) => {
     this.setState({ loading: true });
     var twAPI = new TwitchAPI();
@@ -60,7 +60,7 @@ class App extends Component {
     this.setState({ loading: true });
     const twAPI = new TwitchAPI();
     twAPI.getTwitchStreams(localStorage.getItem(MAX_VIDEOS_COUNT_KEY)).then((response) => {
-      this.setState({loading: false, tileData: response.data.data });
+      this.setState({ loading: false, tileData: response.data.data });
 
     }).catch((error) => {
       this.setState({ loading: false });
