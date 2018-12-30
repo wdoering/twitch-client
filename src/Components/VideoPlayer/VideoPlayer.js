@@ -29,26 +29,6 @@ class VideoPlayer extends Component {
         }
     }
 
-    /**
-     * 
-     *  {
-        "id": "31883882864",
-        "user_id": "39298218",
-        "user_name": "dakotaz",
-        "game_id": "33214",
-        "community_ids": [],
-        "type": "live",
-        "title": "TSM Dakotaz - use code \"dakotaz\" in itemshop!",
-        "viewer_count": 30012,
-        "started_at": "2018-12-28T09:43:54Z",
-        "language": "en",
-        "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_dakotaz-{width}x{height}.jpg",
-        "tag_ids": [
-            "6ea6bca4-4712-4ab9-a906-e3336a9d8039"
-        ]
-    },
-    */
-
     updateViewersCount() {
         const REFRESH_INTERVAL_SECONDS = 5000;
         if (this.props.selectedStream) {
