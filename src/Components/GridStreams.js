@@ -73,11 +73,11 @@ function TitlebarGridList(props) {
               <GridListTileBar
                 title={tile.title}
                 subtitle={<span>by: {tile.user_name}  ||  watchers: {tile.viewer_count}</span>}
-                actionIcon={
-                  <IconButton className={classes.icon}>
-                    <InfoIcon />
-                  </IconButton>
-                }
+                // actionIcon={
+                //   <IconButton className={classes.icon}>
+                //     <InfoIcon />
+                //   </IconButton>
+                // }
               />
             </GridListTile>
           ))

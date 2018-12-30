@@ -28,6 +28,12 @@ const styles = theme => ({
       display: 'block',
     },
   },
+  textField: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    width: '100%',
+    marginLeft: theme.spacing.unit,
+  },
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,

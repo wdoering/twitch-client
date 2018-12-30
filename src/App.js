@@ -57,7 +57,7 @@ class App extends Component {
           {
             (this.state.tileData.length > 0 && !this.state.selectedStream) ?
               <GridStreams tileData={this.state.tileData} handleStreamClick={this.handleStreamClick}></GridStreams>
-              : (!!this.state.selectedStream) ? <VideoPlayer selectedStream={this.state.selectedStream}></VideoPlayer> : "tetas grandes"
+              : (!!this.state.selectedStream) ? <VideoPlayer selectedStream={this.state.selectedStream}></VideoPlayer> : "Nenhum conteúdo disponível :("
 
           }
         </div>
